@@ -41,6 +41,60 @@ INSERT INTO `companycode` VALUES (1,'10000','Rock.co.ltd'),(2,'20000','Jubjub.co
 UNLOCK TABLES;
 
 --
+-- Table structure for table `completeproducts`
+--
+
+DROP TABLE IF EXISTS `completeproducts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `completeproducts` (
+  `completeP_idx` int unsigned NOT NULL AUTO_INCREMENT,
+  `completeP_code` varchar(255) DEFAULT NULL,
+  `completeP_name` varchar(255) DEFAULT NULL,
+  `completeP_price` int DEFAULT NULL,
+  PRIMARY KEY (`completeP_idx`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `completeproducts`
+--
+
+LOCK TABLES `completeproducts` WRITE;
+/*!40000 ALTER TABLE `completeproducts` DISABLE KEYS */;
+INSERT INTO `completeproducts` VALUES (1,'P_NX4Y_ICM','IMPACT CROSS MEMBER',100),(2,'P_NX4L_ICM','IMPACT CROSS MEMBER',1000),(3,'P_NX4B_ICM','IMPACT CROSS MEMBER',3000);
+/*!40000 ALTER TABLE `completeproducts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `components`
+--
+
+DROP TABLE IF EXISTS `components`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `components` (
+  `components_idx` int unsigned NOT NULL AUTO_INCREMENT,
+  `product_name` varchar(255) DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `completeP_idx` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`components_idx`),
+  KEY `completeP_idx` (`completeP_idx`),
+  CONSTRAINT `components_ibfk_1` FOREIGN KEY (`completeP_idx`) REFERENCES `completeproducts` (`completeP_idx`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `components`
+--
+
+LOCK TABLES `components` WRITE;
+/*!40000 ALTER TABLE `components` DISABLE KEYS */;
+INSERT INTO `components` VALUES (1,'RUBBER-2',1,1),(4,'RUBBER-2',4,2),(5,'TAPE-3',2,3);
+/*!40000 ALTER TABLE `components` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `departments`
 --
 
@@ -103,14 +157,14 @@ DROP TABLE IF EXISTS `materialorder`;
 CREATE TABLE `materialorder` (
   `order_idx` int unsigned NOT NULL AUTO_INCREMENT,
   `idx` int unsigned DEFAULT NULL,
-  `material_code` varchar(255) DEFAULT NULL,
+  `material_code` varchar(255) NOT NULL,
   `material_name` varchar(255) DEFAULT NULL,
   `material_price` int unsigned DEFAULT NULL,
   `productAmount` int unsigned DEFAULT NULL,
   `material_supplier_code` varchar(255) DEFAULT NULL,
   `company_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`order_idx`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`order_idx`,`material_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +173,7 @@ CREATE TABLE `materialorder` (
 
 LOCK TABLES `materialorder` WRITE;
 /*!40000 ALTER TABLE `materialorder` DISABLE KEYS */;
-INSERT INTO `materialorder` VALUES (1,1,'R_SCRW1','SCREW-1',200,3,'20000','Jubjub.co.Ltd'),(2,2,'R_SCRW2','SCREW-2',200,2,'20000','Jubjub.co.Ltd'),(3,3,'R_SCRW3','SCREW-3',300,4,'20000','Jubjub.co.Ltd'),(4,4,'R_RUBBER1','RUBBER-1',200,5,'30000','BombBomb.co.Ltd'),(5,5,'R_RUBBER2','RUBBER-2',200,5,'30000','BombBomb.co.Ltd'),(6,6,'R_RUBBER3','RUBBER-3',300,6,'30000','BombBomb.co.Ltd'),(7,9,'R_TAPE3','TAPE-3',300,3,'40000','Jjang.co.Ltd'),(8,11,'R_BOX2','BOX-2',200,5,'10000','Rock.co.ltd');
+INSERT INTO `materialorder` VALUES (1,1,'R_SCRW1','SCREW-1',200,10,'20000','Jubjub.co.Ltd'),(2,2,'R_SCRW2','SCREW-2',200,10,'20000','Jubjub.co.Ltd'),(3,3,'R_SCRW3','SCREW-3',300,20,'20000','Jubjub.co.Ltd'),(4,5,'R_RUBBER2','RUBBER-2',200,10,'30000','BombBomb.co.Ltd'),(5,4,'R_RUBBER1','RUBBER-1',200,10,'30000','BombBomb.co.Ltd'),(6,6,'R_RUBBER3','RUBBER-3',300,20,'30000','BombBomb.co.Ltd');
 /*!40000 ALTER TABLE `materialorder` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,7 +218,7 @@ CREATE TABLE `product` (
   `product_price` int unsigned DEFAULT NULL,
   `total_profit` int DEFAULT NULL,
   PRIMARY KEY (`product_idx`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,7 +227,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,13,'P_NX4Y_ICM','IMPACT CROSS MEMBER',3,2000,NULL),(2,16,'P_CN7Y_ICM','IMPACT CROSS MEMBER',2,1000,NULL),(3,18,'P_CN7W_ICM','IMPACT CROSS MEMBER',6,1000,NULL),(4,15,'P_NX4W_ICM','IMPACT CROSS MEMBER',7,2000,NULL);
+INSERT INTO `product` VALUES (1,13,'P_NX4Y_ICM','IMPACT CROSS MEMBER',1,2000,2000),(2,14,'P_NX4B_ICM','IMPACT CROSS MEMBER',2,2000,4000),(3,15,'P_NX4W_ICM','IMPACT CROSS MEMBER',3,2000,6000),(4,16,'P_CN7Y_ICM','IMPACT CROSS MEMBER',4,1000,4000),(5,15,'P_NX4W_ICM','IMPACT CROSS MEMBER',5,2000,10000),(6,18,'P_CN7W_ICM','IMPACT CROSS MEMBER',6,1000,6000);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,4 +275,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-20 14:39:44
+-- Dump completed on 2024-11-22 15:09:22
